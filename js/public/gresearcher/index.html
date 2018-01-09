@@ -1,0 +1,99 @@
+
+<html ng-app="scotchTodo">
+
+	<head>
+		<title>GResearcher</title>
+		<!-- Plotly.js -->
+		
+		<!-- SCROLLS -->
+		
+		<style>
+			html 					{ overflow-y:scroll; }
+		
+		</style>
+
+		<!-- SPELLS -->
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+		<script src="controllers.js"></script> <!-- load up our controller -->
+		<script src="services.js"></script> <!-- load our todo service -->
+		<script src="core.js"></script> <!-- load our main application -->
+		  
+		
+		<script>
+
+			/*
+			ecbot_future_ke_201712
+			nymex_future_gc_201712
+			2017-11-01		18:00:00
+			2017-11-02		16:59:59
+			*/
+	
+			
+		</script>
+
+	</head>
+
+	<body ng-controller="mainController" >
+		<!-- Plotly chart will be drawn inside this DIV -->
+		<div style="position: relative; top=0px;" id="myDiv"></div>
+
+		<br><br>
+		
+
+		<div style="float: left; position:relative; margin-left: 30px; ">
+
+			<table>
+				<tr>
+					<td>Table</td>
+					<td><input type="text" id="tableAsset" ng-model="tableAsset"/></td>
+					<td></td>
+					<td></td>
+				<tr>
+
+				<tr>
+					<td>Min Date:</td>
+					<td><input type="text" id="minDate" ng-model="minDate"/></td>
+					<td>Min Time:</td>
+					<td><input type="text" id="minTime" ng-model="minTime"/></td>
+				<tr>
+				<tr>
+					<td>Max Date:</td>
+					<td><input type="text" id="maxDate" ng-model="maxDate" /></td>
+					<td>Max Time:</td>
+					<td><input type="text" id="maxTime" ng-model="maxTime"/></td>
+				<tr>
+				<tr>
+					<td><input type="button" value="Graficar"  ng-click="doGraph()"/></td>
+					
+					<td><input type="button" value="Layout"  ng-click="updateLayout()"/></td>
+					<td></td>
+					<td></td>
+				<tr>
+			</table>
+
+		</div>
+		   		 
+		<div style="float: left; position:relative; margin-right: 30px;" >
+			
+			Label Name: <input type="text" id="labelName" ng-model="labelName" />
+			<input type="button" value="Guardar"  ng-click="doSaveIntervals()"/> 
+			<input type="button" value="Cargar"  ng-click="doLoadIntervals()"/><br/>
+			Output Name: <input type="text" id="outputName" ng-model="outputName" /> <br/>
+			Requires Advances: <input type="checkbox" id="requireAdvances"   ng-model="requireAdvances" /> <br/>
+			
+			<br><br>
+			<div  ng-repeat="interval in selectedIntervals">
+				<input type="button" value="Quitar"  ng-click="doRemoveInterval(interval)"/> {{ interval.text }}
+			</div>
+		
+		</div>
+		  
+
+	</body >
+
+</html>
