@@ -22,7 +22,7 @@ class Book
 	end
 	
 	def asks
-		lines.select{|x| x[2] < 0}.sort{|x,y| y[0] <=> x[0]}
+		lines.select{|x| x[2] < 0}.sort{|x,y| x[0] <=> y[0]}
 	end
 	
 	def bids
@@ -160,6 +160,7 @@ loop do
   when "all\n"
 	#tickers.each{|k,x| puts x.lastline.to_s}
   when "bt\n"
+	books.each{|k,x| puts(x.symbol + ": bid:" + x.bid.to_s + " ask:" + x.ask.to_s)}
 	puts calc.btfxprofit(0.002)
   when "book\n"
 	puts books.to_s
