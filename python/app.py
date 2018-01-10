@@ -1,30 +1,33 @@
 
-from persistence import Persistence
+from decimal import *
+from bookservice import BookService
+import datetime
 import bookevent
+
+# Se necesitan tuplas del tipo
+#
+# (1, datetime.date(2017, 10, 31), datetime.time(8, 11, 34, 669000), 'BID       ', Decimal('1274.2'), 25, Decimal('1274.2'), 25, Decimal('1274.3'), 37)
+# (2, datetime.date(2017, 10, 31), datetime.time(8, 11, 34, 728000), 'BID       ', Decimal('1274.2'), 25, Decimal('1274.2'), 25, Decimal('1274.3'), 37)
+# (3, datetime.date(2017, 10, 31), datetime.time(8, 11, 34, 773000), 'ASK       ', Decimal('1274.3'), 37, Decimal('1274.2'), 25, Decimal('1274.3'), 37)
 
 def main():
 
 	tablename = 'test_crypto1'
+	records = [
+		(1, datetime.date(2017, 10, 31), datetime.time(8, 11, 34, 669000), 'BID       ', Decimal('1274.2'), 25, Decimal('1274.2'), 25, Decimal('1274.3'), 37),
+		(2, datetime.date(2017, 10, 31), datetime.time(8, 11, 34, 728000), 'BID       ', Decimal('1274.2'), 25, Decimal('1274.2'), 25, Decimal('1274.3'), 37),
+		(3, datetime.date(2017, 10, 31), datetime.time(8, 11, 34, 773000), 'ASK       ', Decimal('1274.3'), 37, Decimal('1274.2'), 25, Decimal('1274.3'), 37)
+	]
 
-	d = Persistence()
+	d = BookService()
 	d.initialize()
+	d.addTables([tablename])
 
-	exist_table = d.existsTable(tablename)
-	if not exist_table:
-		d.createTable(tablename)
-
-	records = d.getAll(tablename)
-
-	if len(records) == 0:
-		print('llamando a getAll_samples()')
-		records = d.getAll_samples()
-	else:
-		print('llamando a getAll()')
 
 	for r in records:
 		print(r)
 		bookEvent = bookevent.BookEvent.fromTuple(r)
-		d.insert(tablename,bookEvent)
+		d.addEvent(tablename,bookEvent)
 
 	print('Done')
 
