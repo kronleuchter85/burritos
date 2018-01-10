@@ -4,7 +4,7 @@ require 'pg'
 
 
 puts 'abriendo conexion'
-conn = PG.connect( dbname: 'ds' )
+conn = PG.connect( dbname: 'gtrader' , user: 'postgres' , password: 'postgres')
 
 puts 'ejecutando query'
 conn.exec( "SELECT * FROM nymex_future_gc_201712 limit 10" ) do |result|
