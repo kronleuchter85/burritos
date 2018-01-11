@@ -1,10 +1,10 @@
 
-from decimal import *
+from datafeed.datafeed import DataFeed
 from back.bookservice import BookService
 from domain.bookevent import BookEvent
 
 import datetime
-
+from decimal import *
 
 # Se necesitan tuplas del tipo
 #
@@ -12,7 +12,7 @@ import datetime
 # (2, datetime.date(2017, 10, 31), datetime.time(8, 11, 34, 728000), 'BID       ', Decimal('1274.2'), 25, Decimal('1274.2'), 25, Decimal('1274.3'), 37)
 # (3, datetime.date(2017, 10, 31), datetime.time(8, 11, 34, 773000), 'ASK       ', Decimal('1274.3'), 37, Decimal('1274.2'), 25, Decimal('1274.3'), 37)
 
-def test_main():
+def test_service():
 
 	tablename = 'test_crypto2'
 	records = [
@@ -33,4 +33,19 @@ def test_main():
 
 	print('Done')
 
-test_main()
+
+def test_data_feed():
+
+    datafeed = DataFeed('bitfinex')
+    #
+    ws = websocket.WebSocketApp("wss://api.bitfinex.com/ws/2",
+    #ws = websocket.WebSocketApp("wss://api2.bitfinex.com:3000/ws",
+        on_message = datafeed.onMessage,
+        on_error = datafeed.onError,
+        on_close = datafeed.onClose)
+    ws.run_forever()
+
+
+
+#test_data_feed()
+test_service()

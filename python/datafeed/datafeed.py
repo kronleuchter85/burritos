@@ -6,7 +6,11 @@ import websocket
 
 class DataFeed:
 
+    _feedName = None
     _bookService = BookService()
+
+    def __init__(self, name):
+        self._feedName = name
 
     def initialize(self,asset):
         # se crea la tabla para el asset en caso de no existir
@@ -35,19 +39,3 @@ class DataFeed:
 
     def onClose(self,ws):
         print ("### closed ###")
-
-
-
-
-def test_main():
-
-    datafeed = DataFeed()
-    #
-    ws = websocket.WebSocketApp("wss://api.bitfinex.com/ws/2",
-    #ws = websocket.WebSocketApp("wss://api2.bitfinex.com:3000/ws",
-        on_message = datafeed.onMessage,
-        on_error = datafeed.onError,
-        on_close = datafeed.onClose)
-    ws.run_forever()
-
-test_main()
