@@ -14,8 +14,10 @@ class BookService:
         return self._persistence.getAll(asset)
 
     def addTables(self, tables):
-
         for t in tables:
-        	exist_table = self._persistence.existsTable(t)
-        	if not exist_table:
-        		self._persistence.createTable(t)
+        	self.addTable(t)
+
+    def addTable(self , table):
+        exist_table = self._persistence.existsTable(t)
+        if not exist_table:
+            self._persistence.createTable(t)

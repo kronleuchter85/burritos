@@ -1,34 +1,52 @@
 
+from bookservice import BookService
 import websocket
 
 
+class DataFeed:
 
-def on_message(ws, message):
-    print (message)
+    _bookService = BookService()
 
-def on_error(ws, error):
-    print (error)
+    def initialize(self,asset):
+        # se crea la tabla para el asset en caso de no existir
+        _bookService.addTable(asset)
 
-def on_close(ws):
-    print ("### closed ###")
+    def onMessage(self,ws, message):
+        print (message)
 
-#def on_open(ws):
-    #def run(*args):
-    #    for i in range(30000):
-    #        time.sleep(1)
-    #        ws.send("Hello %d" % i)
-    #    time.sleep(1)
-    #    ws.close()
-    #    print "thread terminating..."
-    #thread.start_new_thread(run, ())
+        # se recibe el evento que puede ser
+        # _un Tick (BID o ASK del libro )
+        # _un Trade
+
+        # Paso 1:
+        # en base al evento se crea un objeto BookEvent
+        # event = BookEvent()
+        # event.eventType = ...
+        # event.eventPrice = ...
+
+        # Paso 2:
+        # se llama al servicio
+        # self._bookService.addEvent(event)
+        #
+
+    def onError(self,ws, error):
+        print (error)
+
+    def onClose(self,ws):
+        print ("### closed ###")
+
+
+
 
 def main():
+
+    datafeed = DataFeed()
     #
     ws = websocket.WebSocketApp("wss://api.bitfinex.com/ws/2",
     #ws = websocket.WebSocketApp("wss://api2.bitfinex.com:3000/ws",
-        on_message = on_message,
-        on_error = on_error,
-        on_close = on_close)
+        on_message = datafeed.onMessage,
+        on_error = datafeed.onError,
+        on_close = datafeed.onClose)
     ws.run_forever()
 
 main()
