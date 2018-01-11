@@ -1,5 +1,6 @@
 
-from bookservice import BookService
+from back.bookservice import BookService
+
 import websocket
 
 
@@ -38,7 +39,7 @@ class DataFeed:
 
 
 
-def main():
+def test_main():
 
     datafeed = DataFeed()
     #
@@ -49,4 +50,4 @@ def main():
         on_close = datafeed.onClose)
     ws.run_forever()
 
-main()
+test_main()

@@ -1,4 +1,4 @@
-from persistence import Persistence
+from back.persistence import Persistence
 
 class BookService:
 
@@ -18,6 +18,6 @@ class BookService:
         	self.addTable(t)
 
     def addTable(self , table):
-        exist_table = self._persistence.existsTable(t)
+        exist_table = self._persistence.existsTable(table)
         if not exist_table:
-            self._persistence.createTable(t)
+            self._persistence.createTable(table)
