@@ -6,3 +6,4 @@ Antes de ejecutar:
   _ psycopg2
 2) modificar en la clase Persistence los datos de acceso a la base 
 3) ejecutar con python3 el app.py
+4) gonza se la come
