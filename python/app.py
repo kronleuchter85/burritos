@@ -1,5 +1,5 @@
 
-from datafeed.datafeed import DataFeed
+from datafeed.bitfinex_book_datafeed import BitfinexBookDataFeed
 from back.bookservice import BookService
 from domain.bookevent import BookEvent
 import websocket
@@ -36,17 +36,16 @@ def test_service():
 
 
 def test_data_feed():
-    datafeed = DataFeed('bitfinex')
+    datafeed = BitfinexBookDataFeed('btcusd')
     #
     ws = websocket.WebSocketApp("wss://api.bitfinex.com/ws/2",
-    #ws = websocket.WebSocketApp("wss://api2.bitfinex.com:3000/ws",
         on_message = datafeed.onMessage,
         on_error = datafeed.onError,
         on_close = datafeed.onClose)
-	
+
     ws.on_open = datafeed.onOpen
     ws.run_forever()
-    
+
 
 
 
