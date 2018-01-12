@@ -2,8 +2,9 @@
 from datafeed.datafeed import DataFeed
 from back.bookservice import BookService
 from domain.bookevent import BookEvent
-
+import websocket
 import datetime
+import json
 from decimal import *
 
 # Se necesitan tuplas del tipo
@@ -35,7 +36,6 @@ def test_service():
 
 
 def test_data_feed():
-
     datafeed = DataFeed('bitfinex')
     #
     ws = websocket.WebSocketApp("wss://api.bitfinex.com/ws/2",
@@ -43,9 +43,13 @@ def test_data_feed():
         on_message = datafeed.onMessage,
         on_error = datafeed.onError,
         on_close = datafeed.onClose)
+	
+    ws.on_open = datafeed.onOpen
     ws.run_forever()
+    
 
 
 
-#test_data_feed()
-test_service()
+test_data_feed()
+
+#test_service()
