@@ -15,12 +15,15 @@ class DataFeed:
         self.channels = {}
         self.bids = {}
         self.asks = {}
+        self.lastbid = 0
+        self.lastask = 0
 
     def initialize(self,asset):
         # se crea la tabla para el asset en caso de no existir
         _bookService.addTable(asset)
 
     def onMessage(self,ws, message):
+        
         msg = eval(message)
         if msg.__class__ == {}.__class__:
             if msg["event"] == "subscribed":
@@ -34,10 +37,10 @@ class DataFeed:
                     #sacar de la lista
                     if msg[1][2] > 0:
                         #es un bid
-                        self.bids[msg[0]] = [x for x in self.bids[msg[0]] if x[1] != msg[1][1]]
+                        self.bids[msg[0]] = [x for x in self.bids[msg[0]] if x[0] != msg[1][0]]
                     else:
                         #es un ask
-                        self.asks[msg[0]] = [x for x in self.asks[msg[0]] if x[1] != msg[1][1]]
+                        self.asks[msg[0]] = [x for x in self.asks[msg[0]] if x[0] != msg[1][0]]
                 else:
                     if msg[1][2] > 0:
                         #es un bid
@@ -45,11 +48,19 @@ class DataFeed:
                     else:
                         #es un ask
                         self.asks[msg[0]].append(msg[1])
+                if self.lastbid != self.bid(msg[0])[0] or self.lastask != self.ask(msg[0])[0]:
+                    #cambió el ticker
+                    self.lastbid = self.bid(msg[0])[0]
+                    self.lastask = self.ask(msg[0])[0]
+                    print("Bid:" + str(self.bid(msg[0])[0]) + " Ask:" + str(self.ask(msg[0])[0]))
             else:
-                #es un snapshot
-                self.bids[msg[0]] = [x for x in msg[1] if x[2] > 0]
-                self.asks[msg[0]] = [x for x in msg[1] if x[2] < 0]            
-            #print("Bid:" + str(self.bid[msg[0]]) + " Ask:" + str(self.ask[msg[0]]))
+                    #es un snapshot
+                    self.bids[msg[0]] = [x for x in msg[1] if x[2] > 0]
+                    self.asks[msg[0]] = [x for x in msg[1] if x[2] < 0]
+                    self.lastbid = self.bid(msg[0])[0]
+                    self.lastask = self.ask(msg[0])[0]
+            
+            
 		
         
 
@@ -78,6 +89,6 @@ class DataFeed:
         print ("### opened ###")
         ws.send(json.dumps({"event":"subscribe", "channel":"book", "pair":"XRPUSD"}))
     def bid(self,chan):
-        return sorted(self.bids[chan], key=lambda x: x[0], reverse=True)[0]
+        return(sorted(self.bids[chan], key=lambda x: x[0], reverse=True)[0])
     def ask(self,chan):
-        return sorted(self.asks[chan], key=lambda x: x[0], reverse=False)[0]
+        return(sorted(self.asks[chan], key=lambda x: x[0], reverse=False)[0])
