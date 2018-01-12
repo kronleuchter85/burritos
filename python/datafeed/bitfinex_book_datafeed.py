@@ -3,6 +3,7 @@ from back.bookservice import BookService
 
 import websocket
 import json
+import datetime
 
 class BitfinexBookDataFeed:
 
@@ -11,8 +12,9 @@ class BitfinexBookDataFeed:
 
     def __init__(self, assetList):
         self._assetList = assetList
+        self._bookService.initialize()
         for asset in assetList:
-            #self.initialize("bitfinex_" + asset)
+            self.initialize("bitfinex_" + asset)
             self            
         self.channels = {}
         self.bids = {}
@@ -22,7 +24,6 @@ class BitfinexBookDataFeed:
 
     def initialize(self,asset):
         # se crea la tabla para el asset en caso de no existir
-        self._bookService.initialize()
         self._bookService.addTable(asset)
 
     def onMessage(self,ws, message):
@@ -51,11 +52,46 @@ class BitfinexBookDataFeed:
                     else:
                         #es un ask
                         self.asks[msg[0]].append(msg[1])
-                if self.lastbid != self.bid(msg[0])[0] or self.lastask != self.ask(msg[0])[0]:
-                    #cambió el ticker
-                    self.lastbid = self.bid(msg[0])[0]
-                    self.lastask = self.ask(msg[0])[0]
+                
+                if self.lastbid != self.bid(msg[0])[0]:
+                    #cambió el ticker del bid
+                    bid = self.bid(msg[0])
+                    ask = self.ask(msg[0])
+                    self.lastbid = bid[0]
                     print(self.channels[msg[0]] + " Bid:" + str(self.bid(msg[0])[0]) + " Ask:" + str(self.ask(msg[0])[0]))
+                    b = BookEvent()
+                    b.eventDate = datetime.datetime.now().date()
+                    b.eventTime = datetime.datetime.now().time()
+
+                    b.eventType = "BID"
+                    b.eventPrice = self.lastbid
+                    b.eventSize = bid[1]
+
+                    b.bidPrice = bid[0]
+                    b.bidSize = bid[1]
+                    b.askPrice = ask[0]
+                    b.askSize = ask[1]
+                    _bookService.addEvent("bitfinex_" + self.channels[msg[0]],b)
+                    
+                if self.lastask != self.ask(msg[0])[0]:
+                    #cambió el ticker del ask
+                    bid = self.bid(msg[0])
+                    ask = self.ask(msg[0])
+                    self.lastask = ask[0]
+                    print(self.channels[msg[0]] + " Bid:" + str(self.bid(msg[0])[0]) + " Ask:" + str(self.ask(msg[0])[0]))
+                    b = BookEvent()
+                    b.eventDate = datetime.datetime.now().date()
+                    b.eventTime = datetime.datetime.now().time()
+
+                    b.eventType = "ASK"
+                    b.eventPrice = self.lastask
+                    b.eventSize = ask[1]
+
+                    b.bidPrice = bid[0]
+                    b.bidSize = bid[1]
+                    b.askPrice = ask[0]
+                    b.askSize = ask[1]
+                    _bookService.addEvent("bitfinex_" + self.channels[msg[0]],b)
             else:
                     #es un snapshot
                     self.bids[msg[0]] = [x for x in msg[1] if x[2] > 0]
