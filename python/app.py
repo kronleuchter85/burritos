@@ -36,7 +36,7 @@ def test_service():
 
 
 def test_data_feed():
-    datafeed = BitfinexBookDataFeed('btcusd')
+    datafeed = BitfinexBookDataFeed(["BTCUSD","XRPBTC","XRPUSD"])
     #
     ws = websocket.WebSocketApp("wss://api.bitfinex.com/ws/2",
         on_message = datafeed.onMessage,

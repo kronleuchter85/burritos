@@ -6,12 +6,14 @@ import json
 
 class BitfinexBookDataFeed:
 
-    _assetName = None
+    _assetList = None
     _bookService = BookService()
 
-    def __init__(self, assetName):
-        self._assetName = assetName
-        self.initialize("bitfinex_" + assetName)
+    def __init__(self, assetList):
+        self._assetList = assetList
+        for asset in assetList:
+            #self.initialize("bitfinex_" + asset)
+            self            
         self.channels = {}
         self.bids = {}
         self.asks = {}
@@ -53,7 +55,7 @@ class BitfinexBookDataFeed:
                     #cambió el ticker
                     self.lastbid = self.bid(msg[0])[0]
                     self.lastask = self.ask(msg[0])[0]
-                    print("Bid:" + str(self.bid(msg[0])[0]) + " Ask:" + str(self.ask(msg[0])[0]))
+                    print(self.channels[msg[0]] + " Bid:" + str(self.bid(msg[0])[0]) + " Ask:" + str(self.ask(msg[0])[0]))
             else:
                     #es un snapshot
                     self.bids[msg[0]] = [x for x in msg[1] if x[2] > 0]
@@ -89,7 +91,9 @@ class BitfinexBookDataFeed:
 
     def onOpen(self,ws):
         print ("### opened ###")
-        ws.send(json.dumps({"event":"subscribe", "channel":"book", "pair":"XRPUSD"}))
+        for asset in self._assetList:
+            ws.send(json.dumps({"event":"subscribe", "channel":"book", "pair":asset}))
+        
     def bid(self,chan):
         return(sorted(self.bids[chan], key=lambda x: x[0], reverse=True)[0])
     def ask(self,chan):
