@@ -4,21 +4,22 @@ from back.bookservice import BookService
 import websocket
 import json
 
-class DataFeed:
+class BitfinexBookDataFeed:
 
-    _feedName = None
+    _assetName = None
     _bookService = BookService()
 
-    def __init__(self, name):
-        self._feedName = name
-        #self.initialize("bitfinex_" + name)
+    def __init__(self, assetName):
+        self._assetName = assetName
+        self.initialize("bitfinex_" + assetName)
         self.channels = {}
         self.bids = {}
         self.asks = {}
 
     def initialize(self,asset):
         # se crea la tabla para el asset en caso de no existir
-        _bookService.addTable(asset)
+        self._bookService.initialize()
+        self._bookService.addTable(asset)
 
     def onMessage(self,ws, message):
         msg = eval(message)
@@ -26,7 +27,7 @@ class DataFeed:
             if msg["event"] == "subscribed":
                 self.channels[msg["chanId"]] = msg["pair"]
                 self.bids[msg["chanId"]] = []
-                self.asks[msg["chanId"]] = []                
+                self.asks[msg["chanId"]] = []
             print(msg["event"])
         if msg.__class__ == [].__class__:
             if len(msg[1]) == 3:
@@ -48,10 +49,10 @@ class DataFeed:
             else:
                 #es un snapshot
                 self.bids[msg[0]] = [x for x in msg[1] if x[2] > 0]
-                self.asks[msg[0]] = [x for x in msg[1] if x[2] < 0]            
+                self.asks[msg[0]] = [x for x in msg[1] if x[2] < 0]
             #print("Bid:" + str(self.bid[msg[0]]) + " Ask:" + str(self.ask[msg[0]]))
-		
-        
+
+
 
         # se recibe el evento que puede ser
         # _un Tick (BID o ASK del libro )
@@ -73,7 +74,7 @@ class DataFeed:
 
     def onClose(self,ws):
         print ("### closed ###")
-    
+
     def onOpen(self,ws):
         print ("### opened ###")
         ws.send(json.dumps({"event":"subscribe", "channel":"book", "pair":"XRPUSD"}))
