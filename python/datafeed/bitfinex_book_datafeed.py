@@ -13,21 +13,20 @@ class BitfinexBookDataFeed:
     def __init__(self, assetList):
         self._assetList = assetList
         self._bookService.initialize()
-        for asset in assetList:
-            self.initialize("bitfinex_" + asset)
-            self            
+
         self.channels = {}
         self.bids = {}
         self.asks = {}
         self.lastbid = 0
         self.lastask = 0
 
-    def initialize(self,asset):
-        # se crea la tabla para el asset en caso de no existir
-        self._bookService.addTable(asset)
+        for asset in assetList:
+            self._bookService.addTable("bitfinex_" + asset)
+
+
 
     def onMessage(self,ws, message):
-        
+
         msg = eval(message)
         if msg.__class__ == {}.__class__:
             if msg["event"] == "subscribed":
@@ -52,7 +51,7 @@ class BitfinexBookDataFeed:
                     else:
                         #es un ask
                         self.asks[msg[0]].append(msg[1])
-                
+
                 if self.lastbid != self.bid(msg[0])[0]:
                     #cambió el ticker del bid
                     bid = self.bid(msg[0])
@@ -72,7 +71,7 @@ class BitfinexBookDataFeed:
                     b.askPrice = ask[0]
                     b.askSize = ask[1]
                     self._bookService.addEvent("bitfinex_" + self.channels[msg[0]],b)
-                    
+
                 if self.lastask != self.ask(msg[0])[0]:
                     #cambió el ticker del ask
                     bid = self.bid(msg[0])
@@ -98,10 +97,10 @@ class BitfinexBookDataFeed:
                     self.asks[msg[0]] = [x for x in msg[1] if x[2] < 0]
                     self.lastbid = self.bid(msg[0])[0]
                     self.lastask = self.ask(msg[0])[0]
-            
-            
-		
-        
+
+
+
+
 
 
         # se recibe el evento que puede ser
@@ -129,7 +128,7 @@ class BitfinexBookDataFeed:
         print ("### opened ###")
         for asset in self._assetList:
             ws.send(json.dumps({"event":"subscribe", "channel":"book", "pair":asset}))
-        
+
     def bid(self,chan):
         return(sorted(self.bids[chan], key=lambda x: x[0], reverse=True)[0])
     def ask(self,chan):

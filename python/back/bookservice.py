@@ -19,5 +19,7 @@ class BookService:
 
     def addTable(self , table):
         exist_table = self._persistence.existsTable(table)
+        print('Table' , table,'exists:',exist_table)
         if not exist_table:
+            print('Creando Table:' , table)
             self._persistence.createTable(table)
