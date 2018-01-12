@@ -1,6 +1,6 @@
 
 from back.bookservice import BookService
-
+from domain.bookevent import BookEvent
 import websocket
 import json
 import datetime
@@ -71,7 +71,7 @@ class BitfinexBookDataFeed:
                     b.bidSize = bid[1]
                     b.askPrice = ask[0]
                     b.askSize = ask[1]
-                    _bookService.addEvent("bitfinex_" + self.channels[msg[0]],b)
+                    self._bookService.addEvent("bitfinex_" + self.channels[msg[0]],b)
                     
                 if self.lastask != self.ask(msg[0])[0]:
                     #cambió el ticker del ask
@@ -91,7 +91,7 @@ class BitfinexBookDataFeed:
                     b.bidSize = bid[1]
                     b.askPrice = ask[0]
                     b.askSize = ask[1]
-                    _bookService.addEvent("bitfinex_" + self.channels[msg[0]],b)
+                    self._bookService.addEvent("bitfinex_" + self.channels[msg[0]],b)
             else:
                     #es un snapshot
                     self.bids[msg[0]] = [x for x in msg[1] if x[2] > 0]
