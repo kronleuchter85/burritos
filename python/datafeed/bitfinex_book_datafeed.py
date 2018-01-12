@@ -100,24 +100,6 @@ class BitfinexBookDataFeed:
 
 
 
-
-
-
-        # se recibe el evento que puede ser
-        # _un Tick (BID o ASK del libro )
-        # _un Trade
-
-        # Paso 1:
-        # en base al evento se crea un objeto BookEvent
-        # event = BookEvent()
-        # event.eventType = ...
-        # event.eventPrice = ...
-
-        # Paso 2:
-        # se llama al servicio
-        # self._bookService.addEvent(event)
-        #
-
     def onError(self,ws, error):
         print (error)
 
