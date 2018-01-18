@@ -48,7 +48,7 @@ def test_data_feed():
 
 
 
-
-test_data_feed()
+while 1:
+    test_data_feed()
 
 #test_service()

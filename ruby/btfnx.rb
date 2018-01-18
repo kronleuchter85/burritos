@@ -101,37 +101,37 @@ calc = Calculator.new
 l1 = CalcLine.new
 l1.code = "btc->xrp"
 l1.profitcode = "ammount / (self.tickers['BTCUSD'].ask * (1 + comm)) / (self.tickers['XRPBTC'].ask * (1 + comm)) * (self.tickers['XRPUSD'].bid * (1 - comm))"
-l1.ammountcode = "[self.tickers['BTCUSD'].askvol * self.tickers['BTCUSD'].ask, self.tickers['BTCUSD'].askvol * self.tickers['BTCUSD'].ask / self.tickers['XRPBTC'].askvol * self.tickers['XRPBTC'].ask ,self.tickers['XRPUSD'].bidvol * self.tickers['XRPUSD'].bid]"
+l1.ammountcode = "[self.tickers['BTCUSD'].askvol * self.tickers['BTCUSD'].ask, self.tickers['BTCUSD'].ask / self.tickers['XRPBTC'].askvol * self.tickers['XRPBTC'].ask ,self.tickers['XRPUSD'].bidvol * self.tickers['XRPUSD'].bid]"
 l1.tickers = ["BTCUSD","XRPBTC","XRPUSD"]
 
 l2 = CalcLine.new
 l2.code = "xrp->btc"
 l2.profitcode = "ammount / (self.tickers['XRPUSD'].ask * (1 + comm)) * (self.tickers['XRPBTC'].bid * (1 - comm)) * (self.tickers['BTCUSD'].bid * (1 - comm))"
-l2.ammountcode = "[self.tickers['XRPUSD'].askvol * self.tickers['XRPUSD'].ask, self.tickers['XRPUSD'].askvol * self.tickers['XRPUSD'].ask * self.tickers['XRPBTC'].bidvol * self.tickers['XRPBTC'].bid ,self.tickers['BTCUSD'].bidvol * self.tickers['BTCUSD'].bid]"
+l2.ammountcode = "[self.tickers['XRPUSD'].askvol * self.tickers['XRPUSD'].ask, self.tickers['XRPUSD'].ask * self.tickers['XRPBTC'].bidvol * self.tickers['XRPBTC'].bid ,self.tickers['BTCUSD'].bidvol * self.tickers['BTCUSD'].bid]"
 l2.tickers = ["BTCUSD","XRPBTC","XRPUSD"]
 
 l3 = CalcLine.new
 l3.code = "btc->eth"
 l3.profitcode = "ammount / (self.tickers['BTCUSD'].ask * (1 + comm)) / (self.tickers['ETHBTC'].ask * (1 + comm)) * (self.tickers['ETHUSD'].bid * (1 - comm))"
-l3.ammountcode = "[self.tickers['BTCUSD'].askvol * self.tickers['BTCUSD'].ask, self.tickers['BTCUSD'].askvol * self.tickers['BTCUSD'].ask / self.tickers['ETHBTC'].askvol * self.tickers['ETHBTC'].ask ,self.tickers['ETHUSD'].bidvol * self.tickers['ETHUSD'].bid]"
+l3.ammountcode = "[self.tickers['BTCUSD'].askvol * self.tickers['BTCUSD'].ask,self.tickers['BTCUSD'].ask / self.tickers['ETHBTC'].askvol * self.tickers['ETHBTC'].ask ,self.tickers['ETHUSD'].bidvol * self.tickers['ETHUSD'].bid]"
 l3.tickers = ["BTCUSD","ETHBTC","ETHUSD"]
 
 l4 = CalcLine.new
 l4.code = "eth->btc"
 l4.profitcode = "ammount / (self.tickers['ETHUSD'].ask * (1 + comm)) * (self.tickers['ETHBTC'].bid * (1 - comm)) * (self.tickers['BTCUSD'].bid * (1 - comm))"
-l4.ammountcode = "[self.tickers['ETHUSD'].askvol * self.tickers['ETHUSD'].ask, self.tickers['ETHUSD'].askvol * self.tickers['ETHUSD'].ask * self.tickers['ETHBTC'].bidvol * self.tickers['ETHBTC'].bid ,self.tickers['BTCUSD'].bidvol * self.tickers['BTCUSD'].bid]"
+l4.ammountcode = "[self.tickers['ETHUSD'].askvol * self.tickers['ETHUSD'].ask, self.tickers['ETHUSD'].ask * self.tickers['ETHBTC'].bidvol * self.tickers['ETHBTC'].bid ,self.tickers['BTCUSD'].bidvol * self.tickers['BTCUSD'].bid]"
 l4.tickers = ["BTCUSD","ETHBTC","ETHUSD"]
 
 l5 = CalcLine.new
 l5.code = "btc->iot"
 l5.profitcode = "ammount / (self.tickers['BTCUSD'].ask * (1 + comm)) / (self.tickers['IOTBTC'].ask * (1 + comm)) * (self.tickers['IOTUSD'].bid * (1 - comm))"
-l5.ammountcode = "[self.tickers['BTCUSD'].askvol * self.tickers['BTCUSD'].ask, self.tickers['BTCUSD'].askvol * self.tickers['BTCUSD'].ask / self.tickers['IOTBTC'].askvol * self.tickers['IOTBTC'].ask ,self.tickers['IOTUSD'].bidvol * self.tickers['IOTUSD'].bid]"
+l5.ammountcode = "[self.tickers['BTCUSD'].askvol * self.tickers['BTCUSD'].ask, self.tickers['IOTUSD'].ask * self.tickers['IOTBTC'].askvol * self.tickers['IOTBTC'].ask ,self.tickers['IOTUSD'].bidvol * self.tickers['IOTUSD'].bid]"
 l5.tickers = ["BTCUSD","IOTBTC","IOTUSD"]
 
 l6 = CalcLine.new
 l6.code = "iot->btc"
 l6.profitcode = "ammount / (self.tickers['IOTUSD'].ask * (1 + comm)) * (self.tickers['IOTBTC'].bid * (1 - comm)) * (self.tickers['BTCUSD'].bid * (1 - comm))"
-l6.ammountcode = "[self.tickers['IOTUSD'].askvol * self.tickers['IOTUSD'].ask, self.tickers['IOTUSD'].askvol * self.tickers['IOTUSD'].ask * self.tickers['IOTBTC'].bidvol * self.tickers['IOTBTC'].bid ,self.tickers['BTCUSD'].bidvol * self.tickers['BTCUSD'].bid]"
+l6.ammountcode = "[self.tickers['IOTUSD'].askvol * self.tickers['IOTUSD'].ask, self.tickers['IOTUSD'].ask * self.tickers['IOTBTC'].bidvol * self.tickers['IOTBTC'].bid ,self.tickers['BTCUSD'].bidvol * self.tickers['BTCUSD'].bid]"
 l6.tickers = ["BTCUSD","IOTBTC","IOTUSD"]
 
 
@@ -287,7 +287,7 @@ loop do
   when "all\n"
 	#tickers.each{|k,x| puts x.lastline.to_s}
   when "bt\n"
-	books.each{|k,x| puts(x.symbol + ": bid:" + x.bid.to_s + " ask:" + x.ask.to_s)}
+	books.each{|k,x| puts(x.symbol + ": bid:" + x.bid.to_s + " ask:" + x.ask.to_s + "(" + x.bidvol.to_s + "|" + x.askvol.to_s + ")")}
 	puts calc.btfxprofit(0.002)
   when "book\n"
 	puts books.to_s
