@@ -1,9 +1,11 @@
 
-from datafeed.datafeed import DataFeed
+from datafeed.bitfinex_book_datafeed import BitfinexBookDataFeed
+from datafeed.deribit_book_datafeed import DeribitBookDataFeed
 from back.bookservice import BookService
 from domain.bookevent import BookEvent
-
+import websocket
 import datetime
+import json
 from decimal import *
 
 # Se necesitan tuplas del tipo
@@ -33,19 +35,33 @@ def test_service():
 
 	print('Done')
 
-
-def test_data_feed():
-
-    datafeed = DataFeed('bitfinex')
+def test_bitfinex_data_feed():
+    datafeed = BitfinexBookDataFeed(["BTCUSD","XRPBTC","XRPUSD","LTCUSD","LTCBTC","IOTBTC","IOTUSD","ETHUSD","ETHBTC"])
     #
     ws = websocket.WebSocketApp("wss://api.bitfinex.com/ws/2",
-    #ws = websocket.WebSocketApp("wss://api2.bitfinex.com:3000/ws",
         on_message = datafeed.onMessage,
         on_error = datafeed.onError,
         on_close = datafeed.onClose)
+
+    ws.on_open = datafeed.onOpen
+    ws.run_forever()
+
+def test_deribit_data_feed():
+    datafeed = DeribitBookDataFeed(["BTC-23FEB18"], "2GWQNKJd8crJF", "JUGT7HGVIV5JII43F6BLYOPQOLJ3UZZH")
+    #
+    ws = websocket.WebSocketApp("wss://www.deribit.com/ws/api/v1/",
+        on_message = datafeed.onMessage,
+        on_error = datafeed.onError,
+        on_close = datafeed.onClose)
+
+    ws.on_open = datafeed.onOpen
     ws.run_forever()
 
 
+#test_service()
+#test_bitfinex_data_feed()
+#test_deribit_data_feed()
 
-#test_data_feed()
-test_service()
+while 1:
+    test_bitfinex_data_feed()
+    #test_deribit_data_feed()

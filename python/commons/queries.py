@@ -18,4 +18,4 @@ QUERY_CREATE_TABLE = "Create TABLE @tableName" +\
         "bid_size integer" +\
     ")"
 
-QUERY_CHECK_IF_EXISTS = "select exists(select relname from pg_class where relname='@tableName')"
+QUERY_CHECK_IF_EXISTS = "select exists(select relname from pg_class where lower(relname)=lower('@tableName'))"
