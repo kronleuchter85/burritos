@@ -60,7 +60,7 @@ class Book
     
     def askvol
 		begin
-			self.asks.first[2]
+			self.asks.first[2] * -1
 		rescue
 			puts "askvolerror"
 			return 0
